@@ -1,7 +1,7 @@
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 from rest_framework import viewsets
 from rest_framework import permissions
-from movies.serializers import UserSerializer, GroupSerializer, AliasSerializer, PersonSerializer, MovieSerializer
+from movies.serializers import UserSerializer, AliasSerializer, PersonSerializer, MovieSerializer
 from movies.models import Movie, Person, Alias
 from rest_framework import permissions
 
@@ -11,11 +11,6 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-
-class GroupViewSet(viewsets.ModelViewSet):
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
 class AliasViewSet(viewsets.ModelViewSet):
     queryset = Alias.objects.all()
@@ -28,7 +23,8 @@ class PersonViewSet(viewsets.ModelViewSet):
     serializer_class = PersonSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+
 class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
-    serializer_class = MovieSerializer        
+    serializer_class = MovieSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]

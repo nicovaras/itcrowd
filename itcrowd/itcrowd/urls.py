@@ -5,7 +5,6 @@ from movies import views
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
-router.register(r'groups', views.GroupViewSet)
 router.register(r'aliases', views.AliasViewSet)
 router.register(r'person', views.PersonViewSet)
 router.register(r'movie', views.MovieViewSet)

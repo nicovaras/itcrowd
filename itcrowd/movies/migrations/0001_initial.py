@@ -15,7 +15,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Person',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
                 ('last_name', models.CharField(max_length=100)),
                 ('first_name', models.CharField(max_length=100)),
                 ('aliases', models.TextField()),
@@ -24,20 +25,26 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Movie',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=100)),
                 ('release_year', models.IntegerField()),
-                ('actors', models.ManyToManyField(related_name='movies_as_actor', to='movies.Person')),
-                ('directors', models.ManyToManyField(related_name='movies_as_director', to='movies.Person')),
-                ('producers', models.ManyToManyField(related_name='movies_as_producer', to='movies.Person')),
+                ('actors', models.ManyToManyField(
+                    related_name='movies_as_actor', to='movies.Person')),
+                ('directors', models.ManyToManyField(
+                    related_name='movies_as_director', to='movies.Person')),
+                ('producers', models.ManyToManyField(
+                    related_name='movies_as_producer', to='movies.Person')),
             ],
         ),
         migrations.CreateModel(
             name='Alias',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
                 ('alias', models.CharField(max_length=100)),
-                ('person', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='movies.Person')),
+                ('person', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='movies.Person')),
             ],
         ),
     ]
