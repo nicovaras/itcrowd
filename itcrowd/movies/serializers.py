@@ -15,47 +15,31 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class AliasSerializer(serializers.HyperlinkedModelSerializer):
-    class AliasPersonSerializer(serializers.HyperlinkedModelSerializer):
-        class Meta:
-            model = Person
-            fields = ['url' ,'first_name', 'last_name']
-
-    person = AliasPersonSerializer()
     class Meta:
         model = Alias
         fields = ['alias', 'person']
 
 class PersonSerializer(serializers.HyperlinkedModelSerializer):
-    class PersonAliasSerializer(serializers.HyperlinkedModelSerializer):
-        class Meta:
-            model = Alias
-            fields = ['url' ,'alias']
-
-    class PersonMovieSerializer(serializers.HyperlinkedModelSerializer):
-        class Meta:
-            model = Movie
-            fields = ['url' ,'title', 'release_year']
-
-    aliases = PersonAliasSerializer(many=True)
-    movies_as_actor = PersonMovieSerializer(many=True)
-    movies_as_director = PersonMovieSerializer(many=True)
-    movies_as_producer = PersonMovieSerializer(many=True)
-    
     class Meta:
         model = Person
         fields = ['first_name', 'last_name', 'movies_as_actor', 'movies_as_director', 'movies_as_producer', 'aliases']
 
 class MovieSerializer(serializers.HyperlinkedModelSerializer):
-    class MoviePersonSerializer(serializers.HyperlinkedModelSerializer):
-        class Meta:
-            model = Person
-            fields = ['url' ,'first_name', 'last_name']
+    roman_release_year = serializers.SerializerMethodField()
+    
+    def int_to_roman(self, year):
+        ints = (1000, 900,  500, 400, 100,  90, 50,  40, 10,  9,   5,  4,   1)
+        nums = ('M',  'CM', 'D', 'CD','C', 'XC','L','XL','X','IX','V','IV','I')
+        result = []
+        for i in range(len(ints)):
+            count = int(year / ints[i])
+            result.append(nums[i] * count)
+            year -= ints[i] * count
+        return ''.join(result)
 
-    actors = MoviePersonSerializer(many=True)
-    directors = MoviePersonSerializer(many=True)
-    producers = MoviePersonSerializer(many=True)
-
+    def get_roman_release_year(self, obj):
+        return "{}".format(self.int_to_roman(obj.release_year))
     class Meta:
         model = Movie
-        fields = ['title', 'release_year', 'actors', 'directors', 'producers']
+        fields = ['title', 'release_year', 'roman_release_year', 'actors', 'directors', 'producers']
 
